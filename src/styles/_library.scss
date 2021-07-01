@@ -6,6 +6,9 @@
 	height: 100%;
 	box-shadow: 2px 2px 50px rgb(185, 185, 185);
 	overflow: scroll;
+	transform: translateX(-100%);
+	transition: all 0.5s ease;
+	opacity: 0;
 	h2 {
 		padding: 2rem;
 	}
@@ -51,4 +54,13 @@
 	background-color: rgba(155, 155, 155, 0.5);
 	border-radius: 20px;
 	border: transparent;
+}
+
+.selected {
+	background: rgb(176, 173, 209);
+}
+
+.active-library {
+	transform: translateX(0%);
+	opacity: 1;
 }
