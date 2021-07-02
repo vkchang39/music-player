@@ -5,7 +5,7 @@ const LibrarySong = ({
 	setCurrentSong,
 	songs,
 	audioRef,
-	setIsPlaying,
+	isPlaying,
 	setSongs,
 }) => {
 	const songSelectHandler = async () => {
@@ -14,8 +14,7 @@ const LibrarySong = ({
 			s.id === song.id ? { ...s, active: true } : { ...s, active: false }
 		);
 		setSongs(newSongs);
-		setIsPlaying(true);
-		audioRef.current.play();
+		if (isPlaying) audioRef.current.play();
 	};
 	return (
 		<div
