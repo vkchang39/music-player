@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faPlay,
@@ -15,7 +15,16 @@ const Player = ({
 	setSongInfo,
 	songs,
 	setCurrentSong,
+	setSongs,
 }) => {
+	useEffect(() => {
+		const newSongs = songs.map((s) =>
+			s.id === currentSong.id ? { ...s, active: true } : { ...s, active: false }
+		);
+		setSongs(newSongs);
+		//setIsPlaying(true);
+		//audioRef.current.play();
+	}, [currentSong]);
 	const getTime = (time) => {
 		return (
 			Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2)
@@ -42,27 +51,42 @@ const Player = ({
 		// let currentIndex = songs.findIndex((s) => s.active === true);
 		if (direction === "skip-forward") {
 			setCurrentSong(songs[(currentIndex + 1) % songs.length]);
+			setIsPlaying(false);
 		}
 		if (direction === "skip-back") {
 			if ((currentIndex - 1) % songs.length === -1) {
 				setCurrentSong(songs[songs.length - 1]);
+				setIsPlaying(false);
 				return;
 			}
 			setCurrentSong(songs[(currentIndex - 1) % songs.length]);
+			setIsPlaying(false);
 		}
+	};
+
+	const trackAnim = {
+		transform: `translateX(${songInfo.animationPercentage}%)`,
 	};
 	return (
 		<div className="player">
 			<div className="time-control">
 				<p>{getTime(songInfo.currentTime)}</p>
-				<input
-					min={0}
-					max={songInfo.duration || 0}
-					onChange={dragHandler}
-					value={songInfo.currentTime}
-					type="range"
-				/>
-				<p>{getTime(songInfo.duration)}</p>
+				<div
+					style={{
+						background: `linear-gradient(to right, ${currentSong.color[0]},${currentSong.color[1]})`,
+					}}
+					className="track"
+				>
+					<input
+						min={0}
+						max={songInfo.duration || 0}
+						onChange={dragHandler}
+						value={songInfo.currentTime}
+						type="range"
+					/>
+					<div style={trackAnim} className="animate-track"></div>
+				</div>
+				<p>{songInfo.duration ? getTime(songInfo.duration) : "0.00"}</p>
 			</div>
 			<div className="play-control">
 				<FontAwesomeIcon
