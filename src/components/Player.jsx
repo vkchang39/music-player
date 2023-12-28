@@ -71,7 +71,7 @@ const Player = ({
 	};
 	return (
 		<div className="player">
-			<div className="time-control">
+			<div className="time-control" style={{alignItems:'center'}}>
 				<p>{getTime(songInfo.currentTime)}</p>
 				<div
 					style={{
